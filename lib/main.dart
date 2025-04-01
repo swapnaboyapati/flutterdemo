@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'EmployeeLoginPage.dart';
+import 'ui/employee_login_page.dart';
 
 void main() {
   runApp(const MyApp());

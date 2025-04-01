@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'SuccessPage.dart';
-import 'package:http/http.dart' as http;
-
+import '../integration/api_service.dart';
+import 'success_page.dart';
 
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
@@ -14,7 +12,6 @@ class EmployeeLoginPage extends StatefulWidget {
 
 class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   String pin = "";
-  final String apiUrl = "http://192.168.137.1:3000/api/user/login";
   int _currentImageIndex = 0;
   final List<String> _imagePaths = [
     'assets/logo.png',
@@ -49,39 +46,15 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   }
 
   Future<void> _login() async {
-    if (pin.length != 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("PIN must be 6 digits")),
+    final success = await ApiService.login(pin);
+    if (success) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SuccessPage()),
       );
-      return;
-    }
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"pin": pin}),
-      );
-
-      final responseData = jsonDecode(response.body);
-
-      // ✅ Print response for debugging
-      print("Response: ${response.body}");
-
-      if (response.statusCode == 200 && responseData["message"] == "Login successful") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SuccessPage()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(responseData["message"] ?? "Invalid PIN")),
-        );
-      }
-    } catch (error) {
-      print("Error: $error"); // ✅ Print error for debugging
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Server error. Try again later.")),
+        const SnackBar(content: Text("Invalid PIN or Server Error")),
       );
     }
   }
@@ -161,11 +134,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   }
 
   Widget _buildNumberPad() {
-    List<String> keys = [
-      "1", "2", "3",
-      "4", "5", "6",
-      "7", "8", "9",
-      "C", "0", "⌫",];
+    List<String> keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "0", "⌫"];
 
     return GridView.builder(
       shrinkWrap: true,
