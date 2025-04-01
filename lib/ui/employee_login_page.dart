@@ -45,16 +45,30 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     });
   }
 
+  // Future<void> _login() async {
+  //   final success = await ApiService.login(pin);
+  //   if (success) {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => const SuccessPage()),
+  //     );
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text("Invalid PIN or Server Error")),
+  //     );
+  //   }
+  // }
+
   Future<void> _login() async {
-    final success = await ApiService.login(pin);
-    if (success) {
+    // Mock authentication: PIN is hardcoded as 99999
+    if (pin == "999999") {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SuccessPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Invalid PIN or Server Error")),
+        const SnackBar(content: Text("Invalid PIN")),
       );
     }
   }
