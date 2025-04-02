@@ -19,7 +19,7 @@ class _SuccessPageState extends State<SuccessPage> {
         children: [
           // Left Sidebar
           Container(
-            width: 180,
+            width: 160,
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -122,9 +122,9 @@ class _SuccessPageState extends State<SuccessPage> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-                _billItem("King Fisher", "350ml", 4, 3.5),
-                _billItem("Vegetables", "0.5 lbs", 2, 6.0),
-                _billItem("Bread Slices", "Small", 3, 4.0),
+                _billItem("Fruits", "1 kg", 4, 3.5, "assets/greenapple.png"),
+                _billItem("Vegetables", "0.5 lbs", 2, 6.0, "assets/veg.png"),
+                _billItem("Bread Slices", "Small", 3, 4.0, "assets/img.png"),
                 const Divider(),
                 _billTotalRow("Sub Total", "\$38.0"),
                 _billTotalRow("Tax", "\$3.0"),
@@ -140,7 +140,10 @@ class _SuccessPageState extends State<SuccessPage> {
                     ),
                     minimumSize: const Size(double.infinity, 50),
                   ),
-                  child: const Text("Check Out"),
+                  child: const Text(
+                    "Check Out",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -150,38 +153,35 @@ class _SuccessPageState extends State<SuccessPage> {
     );
   }
   Widget _sidebarButton(int index, IconData icon, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            _selectedIndex = index; // Update the selected index
-          });
-        },
-        child: Container(
-          width: 80, // Set a fixed width for consistency
-          height: 70, // Set a fixed height for consistency
-          decoration: BoxDecoration(
-            color: _selectedIndex == index ? Colors.red.shade100 : Colors.transparent, // Change background color when selected
-            border: Border.all(
-              color: _selectedIndex == index ? Colors.red : Colors.grey, // Border color based on selection
-              width: 2, // Border width
-            ),
-            borderRadius: BorderRadius.circular(8), // Rounded corners for the border
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: _selectedIndex == index ? Colors.red : Colors.grey, size: 30),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: _selectedIndex == index ? Colors.red : Colors.grey,
-                ),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedIndex = index;
+        });
+      },
+      child: Container(
+        width: _selectedIndex == index ? 100 : double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+        decoration: BoxDecoration(
+          color: _selectedIndex == index ? Colors.red : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: _selectedIndex == index ? Colors.white : Colors.black, size: 22),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: _selectedIndex == index ? Colors.white : Colors.black,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -239,9 +239,14 @@ class _SuccessPageState extends State<SuccessPage> {
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
               ),
-              child: const Text("Add to Cart"),
+              child: const Text(
+                "Add to Cart",
+                style: TextStyle(
+                    color: Colors.white),
+              ),
             ),
           ],
         ),
@@ -250,19 +255,28 @@ class _SuccessPageState extends State<SuccessPage> {
   }
 
   // Bill Item Row
-  Widget _billItem(String name, String desc, int qty, double price) {
+  // Bill Item Row with Image
+  Widget _billItem(String name, String desc, int qty, double price, String imgPath) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(desc, style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
-            ],
+          // Item Image
+          Image.asset(imgPath, width: 40, height: 40, fit: BoxFit.cover),
+          const SizedBox(width: 10),
+
+          // Item Details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(desc, style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
+              ],
+            ),
           ),
+
+          // Price
           Text("\$${(price * qty).toStringAsFixed(2)}", style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),

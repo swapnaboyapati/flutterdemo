@@ -91,26 +91,25 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('assets/img.jpg', height: 80),
-                  const SizedBox(height: 10),
+                  Image.asset('assets/img.jpg', height: 120),
                   const Text(
                     'Employee Login',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 20),
                   const Text(
                     'Please input your PIN to validate yourself',
                     style: TextStyle(fontSize: 16, color: Color(0xFF00008B)),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   SizedBox(
-                    width: 260,
+                    width: 310,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: List.generate(6, (index) {
                         return Container(
-                          width: 35,
-                          height: 35,
+                          width: 40,
+                          height: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black26, width: 2),
@@ -125,15 +124,18 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  SizedBox(width: 260, child: _buildNumberPad()),
+                  SizedBox(width: 310, child: _buildNumberPad()),
                   const SizedBox(height: 20),
                   SizedBox(
-                    width: 260,
+                    width: 310,
                     child: ElevatedButton(
                       onPressed: _login,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                       ),
                       child: const Text("Login", style: TextStyle(fontSize: 18, color: Colors.white)),
                     ),
