@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../integration/api_service.dart';
 import '../utils/logger.dart';
+import '../widgets/number_pad.dart';
+import '../widgets/pin_input.dart';
 import 'success_page.dart';
-import '../components/number_pad.dart';
-import '../components/pin_input.dart';
 
 /// EmployeeLoginPage is a stateful widget that allows employees to log in using a PIN.
 /// It includes an animated image slideshow and a number pad for PIN input.
