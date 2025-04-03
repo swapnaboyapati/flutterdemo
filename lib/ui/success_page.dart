@@ -8,8 +8,8 @@ class SuccessPage extends StatefulWidget {
 }
 
 class _SuccessPageState extends State<SuccessPage> {
-  int _selectedIndex = 0; // For sidebar selection
-  int _selectedTestCase = -1; // For selected test case (no selection initially)
+  int _selectedIndex = 0;
+  int _selectedTestCase = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class _SuccessPageState extends State<SuccessPage> {
                       _fastKeyItem("Test Case (1)", 0),
                       _fastKeyItem("Test Case (2)", 1),
                       _fastKeyItem("Test Case (3)", 2),
-                      _fastKeyItem("+", -1), // For "Add" button or other use cases
+                      _fastKeyItem("+", -1),
                     ],
                   ),
 
@@ -109,7 +109,7 @@ class _SuccessPageState extends State<SuccessPage> {
             ),
           ),
 
-          // Right Sidebar (Payment Summary)
+          // Right Sidebar
           Container(
             width: 350,
             padding: const EdgeInsets.all(16),
@@ -187,7 +187,7 @@ class _SuccessPageState extends State<SuccessPage> {
     );
   }
 
-  // Fast Key Items (Test Case Selection)
+  // Fast Key Items
   Widget _fastKeyItem(String title, int index) {
     bool isSelected = _selectedTestCase == index;
     return Padding(
@@ -195,7 +195,7 @@ class _SuccessPageState extends State<SuccessPage> {
       child: GestureDetector(
         onTap: () {
           setState(() {
-            _selectedTestCase = index; // Update selected test case
+            _selectedTestCase = index;
           });
         },
         child: Container(
@@ -254,8 +254,6 @@ class _SuccessPageState extends State<SuccessPage> {
     );
   }
 
-  // Bill Item Row
-  // Bill Item Row with Image
   Widget _billItem(String name, String desc, int qty, double price, String imgPath) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),

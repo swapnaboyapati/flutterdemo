@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../integration/api_service.dart';
+import '../utils/logger.dart';
 import 'success_page.dart';
+import '../components/number_pad.dart';
+import '../components/pin_input.dart';
 
+/// EmployeeLoginPage is a stateful widget that allows employees to log in using a PIN.
+/// It includes an animated image slideshow and a number pad for PIN input.
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
 
@@ -13,6 +18,8 @@ class EmployeeLoginPage extends StatefulWidget {
 class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   String pin = "";
   int _currentImageIndex = 0;
+
+  // List of image assets for the slideshow
   final List<String> _imagePaths = [
     'assets/logo.png',
     'assets/image.png',
@@ -25,6 +32,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     _startImageSlideshow();
   }
 
+  /// Starts a periodic timer to cycle through the images in the slideshow.
   void _startImageSlideshow() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
@@ -33,6 +41,8 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     });
   }
 
+  /// Handles number pad key presses to update the PIN input.
+  /// @param value The value of the pressed key.
   void _onKeyPressed(String value) {
     setState(() {
       if (value == "C") {
@@ -45,14 +55,20 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     });
   }
 
+  // /// Attempts to log in using the entered PIN.
+  // /// Calls the API service and navigates to the success page on success.
   // Future<void> _login() async {
+  //   LoggerService.info("User attempting login with PIN: \$pin");
   //   final success = await ApiService.login(pin);
+  //
   //   if (success) {
+  //     LoggerService.info("Login successful. Navigating to SuccessPage.");
   //     Navigator.push(
   //       context,
   //       MaterialPageRoute(builder: (context) => const SuccessPage()),
   //     );
   //   } else {
+  //     LoggerService.error("Login failed for PIN: \$pin");
   //     ScaffoldMessenger.of(context).showSnackBar(
   //       const SnackBar(content: Text("Invalid PIN or Server Error")),
   //     );
@@ -60,7 +76,6 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   // }
 
   Future<void> _login() async {
-    // Mock authentication: PIN is hardcoded as 99999
     if (pin == "999999") {
       Navigator.push(
         context,
@@ -80,12 +95,14 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
       body: SafeArea(
         child: Row(
           children: [
+            // Image slideshow on the left
             Expanded(
               child: Image.asset(
                 _imagePaths[_currentImageIndex],
                 fit: BoxFit.cover,
               ),
             ),
+            // Login form on the right
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -102,29 +119,9 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                     style: TextStyle(fontSize: 16, color: Color(0xFF00008B)),
                   ),
                   const SizedBox(height: 30),
-                  SizedBox(
-                    width: 310,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(6, (index) {
-                        return Container(
-                          width: 40,
-                          height: 40,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black26, width: 2),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Text(
-                            index < pin.length ? "*" : "",
-                            style: const TextStyle(fontSize: 24),
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
+                  PinInput(pin: pin),
                   const SizedBox(height: 20),
-                  SizedBox(width: 310, child: _buildNumberPad()),
+                  SizedBox(width: 310, child: NumberPad(onKeyPressed: _onKeyPressed)),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: 310,
@@ -146,41 +143,6 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildNumberPad() {
-    List<String> keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "0", "⌫"];
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1.5,
-      ),
-      itemCount: keys.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () => _onKeyPressed(keys[index]),
-          child: Container(
-            margin: const EdgeInsets.all(6),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(color: Colors.black26, blurRadius: 2, offset: const Offset(2, 2)),
-              ],
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              keys[index],
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-          ),
-        );
-      },
     );
   }
 }
