@@ -55,26 +55,6 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     });
   }
 
-  // /// Attempts to log in using the entered PIN.
-  // /// Calls the API service and navigates to the success page on success.
-  // Future<void> _login() async {
-  //   LoggerService.info("User attempting login with PIN: \$pin");
-  //   final success = await ApiService.login(pin);
-  //
-  //   if (success) {
-  //     LoggerService.info("Login successful. Navigating to SuccessPage.");
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => const SuccessPage()),
-  //     );
-  //   } else {
-  //     LoggerService.error("Login failed for PIN: \$pin");
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text("Invalid PIN or Server Error")),
-  //     );
-  //   }
-  // }
-
   Future<void> _login() async {
     if (pin == "999999") {
       Navigator.push(
