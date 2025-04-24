@@ -53,7 +53,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
         pin += value;
       }
     });
-  } 
+  }
 
   Future<void> _login() async {
     if (pin == "999999") {
