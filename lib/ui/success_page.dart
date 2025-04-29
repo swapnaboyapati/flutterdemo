@@ -36,7 +36,7 @@ class _SuccessPageState extends State<SuccessPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                Image.asset('assets/img.jpg', width: 80),
+                Image.asset('assets/pinaka.png', width: 80),
                 const SizedBox(height: 20),
                 SidebarButton(index: 0,
                     selectedIndex: _selectedIndex,

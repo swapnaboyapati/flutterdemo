@@ -13,6 +13,54 @@ class EmployeeLoginPage extends StatefulWidget {
 
 class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   String pin = "";
+  int _currentIndex = 0;
+
+  final List<String> _images = [
+    'assets/img_1.png',
+    'assets/loginname.png',
+    'assets/POS-systems.jpg',
+    'assets/img_1.png',
+  ];
+
+  final List<String> _captions = [
+    '"Designed for speed and efficiency — PINAKA POS helps you complete sales in seconds with an intuitive and user-friendly interface, reducing training time and increasing productivity."',
+    '"Track sales, manage inventory, and handle staff permissions — all from one sleek dashboard that’s built for real-time data access and seamless integration with your business tools."',
+    '"Reliable and secure — our POS keeps your business running smoothly every day with 24/7 uptime, cloud backups, and end-to-end encrypted transactions."',
+    '"Designed for speed and efficiency — PINAKA POS helps you complete sales in seconds with an intuitive and user-friendly interface, ensuring faster checkout and higher customer satisfaction."', // enhanced duplicate
+  ];
+
+  late PageController _pageController;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+
+    _timer = Timer.periodic(const Duration(seconds: 2), (Timer timer) {
+      _currentIndex++;
+
+      _pageController.animateToPage(
+        _currentIndex,
+        duration: const Duration(milliseconds: 700),
+        curve: Curves.easeInOut,
+      );
+
+      if (_currentIndex == _images.length - 1) {
+        Future.delayed(const Duration(milliseconds: 710), () {
+          _pageController.jumpToPage(0);
+          _currentIndex = 0;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
 
   void _onKeyPressed(String value) {
     setState(() {
@@ -45,35 +93,52 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SizedBox(
-          width: 1920,
-          height: 1080,
+          width: 1920, height: 1080,
           child: Row(
             children: [
               // Left Side - Image + Caption
               Expanded(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Image.asset(
-                      'assets/POS-systems.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                      bottom: 70,
-                      left: 150,
-                      right: 150,
-                      child: Text(
-                        '"Designed for speed and efficiency — PINAKA POS helps you complete sales in seconds with an intuitive and user-friendly interface."',
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: _images.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.asset(
+                          _images[index],
+                          fit: BoxFit.cover,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 700),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            final offsetAnimation = Tween<Offset>(
+                              begin: const Offset(-1.0, 0.0),
+                              end: Offset.zero,
+                            ).animate(animation);
+                            return SlideTransition(position: offsetAnimation, child: child);
+                          },
+                          child: Container(
+                            key: ValueKey<int>(index),
+                            padding: const EdgeInsets.symmetric(horizontal: 150),
+                            alignment: Alignment.bottomCenter,
+                            margin: const EdgeInsets.only(bottom: 70),
+                            child: Text(
+                              _captions[index],
+                              style: const TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
 
@@ -88,17 +153,21 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
                         height: 100,
                       ),
                       const SizedBox(height: 18),
-                      Text(
+                      const Text(
                         'Employee Login',
                         style: TextStyle(
-                          color: Colors.red, fontSize: 25, fontFamily: 'Inter', fontWeight: FontWeight.w600, height: 0.9,
+                          color: Colors.red,
+                          fontSize: 25,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0.9,
                         ),
                       ),
                       const SizedBox(height: 19),
-                      Text(
+                      const Text(
                         'Please Input your PIN to Validate your self',
                         style: TextStyle(
-                          color: const Color(0xFF4C5F7D),
+                          color: Color(0xFF4C5F7D),
                           fontSize: 18.5,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w500,
