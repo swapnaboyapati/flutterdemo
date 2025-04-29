@@ -1,13 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../integration/api_service.dart';
-import '../utils/logger.dart';
 import '../widgets/number_pad.dart';
 import '../widgets/pin_input.dart';
 import 'success_page.dart';
 
-/// EmployeeLoginPage is a stateful widget that allows employees to log in using a PIN.
-/// It includes an animated image slideshow and a number pad for PIN input.
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
 
@@ -17,32 +13,7 @@ class EmployeeLoginPage extends StatefulWidget {
 
 class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   String pin = "";
-  int _currentImageIndex = 0;
 
-  // List of image assets for the slideshow
-  final List<String> _imagePaths = [
-    'assets/logo.png',
-    'assets/image.png',
-    'assets/imagee.png',
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _startImageSlideshow();
-  }
-
-  /// Starts a periodic timer to cycle through the images in the slideshow.
-  void _startImageSlideshow() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _currentImageIndex = (_currentImageIndex + 1) % _imagePaths.length;
-      });
-    });
-  }
-
-  /// Handles number pad key presses to update the PIN input.
-  /// @param value The value of the pressed key.
   void _onKeyPressed(String value) {
     setState(() {
       if (value == "C") {
@@ -73,54 +44,104 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Row(
-          children: [
-            // Image slideshow on the left
-            Expanded(
-              child: Image.asset(
-                _imagePaths[_currentImageIndex],
-                fit: BoxFit.cover,
+        child: SizedBox(
+          width: 1920,
+          height: 1080,
+          child: Row(
+            children: [
+              // Left Side - Image + Caption
+              Expanded(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      'assets/POS-systems.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      bottom: 70,
+                      left: 150,
+                      right: 150,
+                      child: Text(
+                        '"Designed for speed and efficiency — PINAKA POS helps you complete sales in seconds with an intuitive and user-friendly interface."',
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // Login form on the right
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset('assets/img.jpg', height: 120),
-                  const Text(
-                    'Employee Login',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Please input your PIN to validate yourself',
-                    style: TextStyle(fontSize: 16, color: Color(0xFF00008B)),
-                  ),
-                  const SizedBox(height: 30),
-                  PinInput(pin: pin),
-                  const SizedBox(height: 20),
-                  SizedBox(width: 310, child: NumberPad(onKeyPressed: _onKeyPressed)),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: 310,
-                    child: ElevatedButton(
-                      onPressed: _login,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+
+              // Right Side - Login Form
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        'assets/pinaka.png',
+                        height: 100,
+                      ),
+                      const SizedBox(height: 18),
+                      Text(
+                        'Employee Login',
+                        style: TextStyle(
+                          color: Colors.red, fontSize: 25, fontFamily: 'Inter', fontWeight: FontWeight.w600, height: 0.9,
                         ),
                       ),
-                      child: const Text("Login", style: TextStyle(fontSize: 18, color: Colors.white)),
-                    ),
+                      const SizedBox(height: 19),
+                      Text(
+                        'Please Input your PIN to Validate your self',
+                        style: TextStyle(
+                          color: const Color(0xFF4C5F7D),
+                          fontSize: 18.5,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w500,
+                          height: 0.92,
+                        ),
+                      ),
+                      const SizedBox(height: 22),
+                      SizedBox(
+                        width: 450,
+                        child: Column(
+                          children: [
+                            PinInput(pin: pin),
+                            const SizedBox(height: 20),
+                            NumberPad(onKeyPressed: _onKeyPressed),
+                            const SizedBox(height: 30),
+                            ElevatedButton(
+                              onPressed: _login,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                minimumSize: const Size(440, 40),
+                              ),
+                              child: const Text(
+                                "Login",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

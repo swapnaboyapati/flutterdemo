@@ -23,26 +23,36 @@ class NumberPad extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1.5,
+        childAspectRatio: 1.9,
       ),
       itemCount: keys.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () => onKeyPressed(keys[index]),
           child: Container(
-            margin: const EdgeInsets.all(6),
-            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(9),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
-                BoxShadow(color: Colors.black26, blurRadius: 2, offset: const Offset(2, 2)),
+                BoxShadow(
+                  color: const Color(0x25000000),
+                  blurRadius: 7,
+                  offset: const Offset(0, 4),
+                  spreadRadius: 0,
+                ),
               ],
             ),
             alignment: Alignment.center,
             child: Text(
               keys[index],
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF4C5F7D),
+                height: 0.35,
+              ),
             ),
           ),
         );
