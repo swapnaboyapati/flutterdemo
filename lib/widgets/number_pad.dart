@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 
 /// A customizable numeric keypad widget.
-///
-/// This widget provides a number pad with digits 0-9, a clear button ('C'), and a backspace button ('⌫').
-/// Each key press triggers a callback function to handle user input.
 class NumberPad extends StatelessWidget {
-  /// Callback function triggered when a key is pressed.
   final Function(String) onKeyPressed;
 
-  /// Creates a [NumberPad] widget.
-  ///
-  /// The [onKeyPressed] parameter is required to handle key press events.
   const NumberPad({super.key, required this.onKeyPressed});
 
   @override
   Widget build(BuildContext context) {
-    // List of keys displayed on the number pad.
     List<String> keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "0", "⌫"];
 
     return GridView.builder(
@@ -27,8 +19,9 @@ class NumberPad extends StatelessWidget {
       ),
       itemCount: keys.length,
       itemBuilder: (context, index) {
+        final keyLabel = keys[index];
         return GestureDetector(
-          onTap: () => onKeyPressed(keys[index]),
+          onTap: () => onKeyPressed(keyLabel),
           child: Container(
             margin: const EdgeInsets.all(9),
             padding: const EdgeInsets.all(16),
@@ -45,8 +38,21 @@ class NumberPad extends StatelessWidget {
               ],
             ),
             alignment: Alignment.center,
-            child: Text(
-              keys[index],
+            child: keyLabel == "⌫"
+                ? Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                keyLabel,
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF4C5F7D),
+                  height: 0.35,
+                ),
+              ),
+            )
+                : Text(
+              keyLabel,
               style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w500,

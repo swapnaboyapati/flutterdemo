@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:demo/ui/tables_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/number_pad.dart';
 import '../widgets/pin_input.dart';
-import 'success_page.dart';
 
 class EmployeeLoginPage extends StatefulWidget {
   const EmployeeLoginPage({super.key});
@@ -26,7 +26,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     '"Designed for speed and efficiency — PINAKA POS helps you complete sales in seconds with an intuitive and user-friendly interface, reducing training time and increasing productivity."',
     '"Track sales, manage inventory, and handle staff permissions — all from one sleek dashboard that’s built for real-time data access and seamless integration with your business tools."',
     '"Reliable and secure — our POS keeps your business running smoothly every day with 24/7 uptime, cloud backups, and end-to-end encrypted transactions."',
-    '"Designed for speed and efficiency — PINAKA POS helps you complete sales in seconds with an intuitive and user-friendly interface, ensuring faster checkout and higher customer satisfaction."', // enhanced duplicate
+    '"Designed for speed and efficiency — PINAKA POS helps you complete sales in seconds with an intuitive and user-friendly interface, reducing training time and increasing productivity."',
   ];
 
   late PageController _pageController;
@@ -78,7 +78,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
     if (pin == "999999") {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const SuccessPage()),
+        MaterialPageRoute(builder: (context) => TablesScreen()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
